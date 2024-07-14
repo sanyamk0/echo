@@ -1,10 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../shared/Card";
 import Button from "../shared/Button";
 import TextInput from "../shared/TextInput";
+import { useSelector } from "react-redux";
+import {
+  selectError,
+  selectHashToken,
+  selectOtp,
+  selectPhone,
+} from "../../app/auth/authSlice";
 
 const StepOtp = () => {
   const [otp, setOtp] = useState("");
+  const phoneNumber = useSelector(selectPhone);
+  const generatedOtp = useSelector(selectOtp);
+  const hashToken = useSelector(selectHashToken);
+  const error = useSelector(selectError);
 
   async function submit() {
     try {
@@ -13,6 +24,15 @@ const StepOtp = () => {
       console.log(error);
     }
   }
+
+  useEffect(() => {
+    if (error) {
+      console.log(error.message);
+    }
+    if (generatedOtp) {
+      console.log("Your OTP is: ", generatedOtp);
+    }
+  }, [generatedOtp, error]);
 
   return (
     <>

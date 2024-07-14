@@ -2,12 +2,17 @@ import { useState } from "react";
 import Card from "../../shared/Card";
 import Button from "../../shared/Button";
 import TextInput from "../../shared/TextInput";
+import { useDispatch } from "react-redux";
+import { sendOtpAsync } from "../../../app/auth/authSlice";
 
 const Phone = ({ onNext }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
+  const dispatch = useDispatch();
 
   async function submit() {
+    if (!phoneNumber) return;
     try {
+      dispatch(sendOtpAsync(phoneNumber));
       onNext();
     } catch (err) {
       console.log(err);
