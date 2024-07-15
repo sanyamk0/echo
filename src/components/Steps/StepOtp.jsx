@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import Card from "../shared/Card";
 import Button from "../shared/Button";
 import TextInput from "../shared/TextInput";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   selectError,
   selectHashToken,
   selectOtp,
   selectPhone,
+  verifyOtpAsync,
 } from "../../app/auth/authSlice";
 
 const StepOtp = () => {
@@ -16,10 +17,12 @@ const StepOtp = () => {
   const generatedOtp = useSelector(selectOtp);
   const hashToken = useSelector(selectHashToken);
   const error = useSelector(selectError);
+  const dispatch = useDispatch();
 
   async function submit() {
+    if (!otp || !phoneNumber || !hashToken) return;
     try {
-      console.log(otp);
+      dispatch(verifyOtpAsync({ phoneNumber, otp, hashToken }));
     } catch (error) {
       console.log(error);
     }

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { sendOtp } from "../../http";
+import { sendOtp, verifyOtp } from "../../http";
 
 const initialState = {
   status: "idle",
@@ -23,6 +23,18 @@ export const sendOtpAsync = createAsyncThunk(
   }
 );
 
+export const verifyOtpAsync = createAsyncThunk(
+  "auth/verifyOtp",
+  async (data) => {
+    try {
+      const response = await verifyOtp(data);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -39,6 +51,25 @@ export const authSlice = createSlice({
         state.status = "idle";
       })
       .addCase(sendOtpAsync.rejected, (state) => {
+        state.status = "error";
+      })
+      .addCase(verifyOtpAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(verifyOtpAsync.fulfilled, (state, action) => {
+        if (action.payload.status === 200) {
+          state.isAuth = true;
+          state.user = action.payload.data.user;
+          state.error = "";
+          state.status = "idle";
+        } else if (action.payload.response.status === 400) {
+          state.isAuth = false;
+          state.user = null;
+          state.error = action.payload.response.data;
+          state.status = "idle";
+        }
+      })
+      .addCase(verifyOtpAsync.rejected, (state) => {
         state.status = "error";
       });
   },
