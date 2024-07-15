@@ -2,10 +2,20 @@ import { useState } from "react";
 import Card from "../shared/Card";
 import Button from "../shared/Button";
 import Loader from "../shared/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  activateAccountAsync,
+  selectAvatar,
+  selectName,
+  setAvatar,
+} from "../../app/activate/activateSlice";
 
 const StepAvatar = () => {
   const [image, setImage] = useState("");
   const [loading, setLoading] = useState(false);
+  const name = useSelector(selectName);
+  const avatar = useSelector(selectAvatar);
+  const dispatch = useDispatch();
 
   function captureImage(e) {
     const file = e.target.files[0];
@@ -13,13 +23,15 @@ const StepAvatar = () => {
     reader.readAsDataURL(file);
     reader.onloadend = function () {
       setImage(reader.result);
+      dispatch(setAvatar(reader.result));
     };
   }
 
   async function submit() {
+    if (!name || !avatar) return;
     setLoading(true);
     try {
-      console.log("activate");
+      dispatch(activateAccountAsync({ name, avatar }));
     } catch (error) {
       console.log(error);
     } finally {

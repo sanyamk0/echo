@@ -38,6 +38,19 @@ export const verifyOtpAsync = createAsyncThunk(
 export const authSlice = createSlice({
   name: "auth",
   initialState,
+  reducers: {
+    setAuth(state, action) {
+      console.log(action.payload);
+      const { user } = action.payload;
+      state.user = user;
+      state.isAuth = true;
+    },
+    setUser(state, action) {
+      console.log(action.payload);
+      state.user = action.payload.data.user;
+      state.isAuth = action.payload.data.auth;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(sendOtpAsync.pending, (state) => {
@@ -74,6 +87,8 @@ export const authSlice = createSlice({
       });
   },
 });
+
+export const { setAuth, setUser } = authSlice.actions;
 
 export const selectStatus = (state) => state.auth.status;
 export const selectError = (state) => state.auth.error;

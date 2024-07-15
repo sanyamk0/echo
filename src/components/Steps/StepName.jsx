@@ -2,12 +2,17 @@ import { useState } from "react";
 import Card from "../shared/Card";
 import Button from "../shared/Button";
 import TextInput from "../shared/TextInput";
+import { useDispatch, useSelector } from "react-redux";
+import { selectName, setName } from "../../app/activate/activateSlice";
 
 const StepName = ({ onNext }) => {
-  const name = "sanyam";
+  const name = useSelector(selectName);
+  const dispatch = useDispatch();
   const [username, setUsername] = useState(name);
 
   function nextStep() {
+    if (!username) return;
+    dispatch(setName(username));
     onNext();
   }
 
