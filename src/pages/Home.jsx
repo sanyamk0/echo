@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../components/shared/Button";
 import Card from "../components/shared/Card";
 import { useLoadingWithRefresh } from "../hooks/useLoadingWithRefresh";
+import Loader from "../components/shared/Loader";
 
 const Home = () => {
   let navigate = useNavigate();
@@ -12,7 +13,7 @@ const Home = () => {
   };
 
   return loading ? (
-    <p>loading...</p>
+    <Loader message="Loading, please wait.." />
   ) : (
     <div className="flex items-center justify-center mt-24">
       <Card title="Welcome to Echo!">

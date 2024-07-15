@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { sendOtp, verifyOtp } from "../../http";
+import { logout, sendOtp, verifyOtp } from "../../http";
 
 const initialState = {
   status: "idle",
@@ -30,10 +30,19 @@ export const verifyOtpAsync = createAsyncThunk(
       const response = await verifyOtp(data);
       return response;
     } catch (error) {
-      console.log(error);
+      return error;
     }
   }
 );
+
+export const logoutAsync = createAsyncThunk("auth/logout", async () => {
+  try {
+    const response = await logout();
+    return response;
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 export const authSlice = createSlice({
   name: "auth",
@@ -70,8 +79,9 @@ export const authSlice = createSlice({
       })
       .addCase(verifyOtpAsync.fulfilled, (state, action) => {
         if (action.payload.status === 200) {
-          state.isAuth = true;
-          state.user = action.payload.data.user;
+          const { user, auth } = action.payload.data;
+          state.isAuth = auth;
+          state.user = user;
           state.error = "";
           state.status = "idle";
         } else if (action.payload.response.status === 400) {
@@ -82,6 +92,18 @@ export const authSlice = createSlice({
         }
       })
       .addCase(verifyOtpAsync.rejected, (state) => {
+        state.status = "error";
+      })
+      .addCase(logoutAsync.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(logoutAsync.fulfilled, (state, action) => {
+        const { user, auth } = action.payload;
+        state.user = user;
+        state.isAuth = auth;
+        state.status = "idle";
+      })
+      .addCase(logoutAsync.rejected, (state) => {
         state.status = "error";
       });
   },

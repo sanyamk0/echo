@@ -1,11 +1,18 @@
 import { IoMdLogOut } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  logoutAsync,
+  selectIsAuth,
+  selectUser,
+} from "../../app/auth/authSlice";
 
 const Navigation = () => {
-  const isAuth = true;
-  const user = { name: "John Doe", avatar: "" };
+  const isAuth = useSelector(selectIsAuth);
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
 
   const logoutUser = async () => {
-    console.log("logout");
+    dispatch(logoutAsync());
   };
 
   return (
