@@ -40,15 +40,14 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setAuth(state, action) {
-      console.log(action.payload);
-      const { user } = action.payload;
+      const { user, auth } = action.payload;
       state.user = user;
-      state.isAuth = true;
+      state.isAuth = auth;
     },
     setUser(state, action) {
-      console.log(action.payload);
-      state.user = action.payload.data.user;
-      state.isAuth = action.payload.data.auth;
+      const { user, auth } = action.payload.data;
+      state.user = user;
+      state.isAuth = auth;
     },
   },
   extraReducers: (builder) => {

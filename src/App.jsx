@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Authenticate from "./pages/Authenticate";
 import Activate from "./pages/Activate";
 import { useSelector } from "react-redux";
+import Rooms from "./pages/Rooms.jsx";
 
 const GuestRoute = ({ children }) => {
   const { isAuth } = useSelector((state) => state.auth);
@@ -58,6 +59,14 @@ const router = createBrowserRouter([
       <SemiProtectedRoute>
         <Activate />
       </SemiProtectedRoute>
+    ),
+  },
+  {
+    path: "/rooms",
+    element: (
+      <ProtectedRoute>
+        <Rooms />
+      </ProtectedRoute>
     ),
   },
 ]);
