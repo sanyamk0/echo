@@ -1,15 +1,23 @@
 import { useState } from "react";
 import TextInput from "../components/shared/TextInput";
 import { IoClose } from "react-icons/io5";
+import { useDispatch } from "react-redux";
+import { createRoomAsync } from "../app/rooms/roomsSlice";
+import { useNavigate } from "react-router-dom";
 
 const AddRoomModal = ({ onClose }) => {
   const [roomType, setRoomType] = useState("open");
   const [topic, setTopic] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const createRoom = async () => {
     if (!topic || !roomType) return;
     try {
-      console.log("create room");
+      const response = await dispatch(
+        createRoomAsync({ topic, roomType })
+      ).unwrap();
+      navigate(`/room/${response.data._id}`);
     } catch (error) {
       console.log(error);
     }

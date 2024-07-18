@@ -14,6 +14,10 @@ export const verifyOtp = (data) => api.post("/api/auth/verify-otp", data);
 export const activate = (data) => api.post("/api/auth/activate", data);
 export const logout = () => api.get("/api/auth/logout");
 
+export const createRoom = (data) => api.post("/api/room/createRoom", data);
+export const getAllRooms = () => api.get("/api/room/getAllRooms");
+export const getRoom = (roomId) => api.get(`/api/room/getRoom/${roomId}`);
+
 // Interceptors
 api.interceptors.response.use(
   (config) => {

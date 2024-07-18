@@ -1,12 +1,27 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import RoomCard from "./RoomCard";
 import { IoMdSearch } from "react-icons/io";
 import { IoPersonAdd } from "react-icons/io5";
 import AddRoomModal from "./AddRoomModal";
+import { useDispatch } from "react-redux";
+import { getAllRoomsAsync } from "../app/rooms/roomsSlice";
 
 const Rooms = () => {
   const [showModal, setShowModal] = useState(false);
   const [rooms, setRooms] = useState([]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        const { data } = await dispatch(getAllRoomsAsync()).unwrap();
+        setRooms(data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchRooms();
+  }, [dispatch]);
 
   return (
     <>

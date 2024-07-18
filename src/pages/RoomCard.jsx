@@ -1,11 +1,14 @@
 import { IoMdPerson } from "react-icons/io";
 import { IoChatbubbleEllipses } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const RoomCard = ({ room }) => {
+  const navigate = useNavigate();
+
   return (
     <div
       onClick={() => {
-        // router.push(`/room/${room._id}`);
+        navigate(`/room/${room._id}`);
       }}
       className="bg-[#1d1d1d] p-5 rounded-[10px] cursor-pointer"
     >
