@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { selectUser } from "../app/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { FaArrowLeft, FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import { HiOutlineHandRaised } from "react-icons/hi2";
 import { FaHandPeace } from "react-icons/fa6";
 import { useNavigate, useParams } from "react-router-dom";
 import { getRoomAsync } from "../app/rooms/roomsSlice";
+import { useWebRTC } from "../hooks/useWebRTC";
 
 const Room = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id: roomId } = useParams();
+  const user = useSelector(selectUser);
   const [room, setRoom] = useState(null);
-  const [clients, setClients] = useState([]);
+  const { clients, provideRef } = useWebRTC(roomId, user);
 
   const handleManualLeave = () => {
     navigate("/rooms");
@@ -63,7 +66,10 @@ const Room = () => {
             return (
               <div className="flex flex-col items-center" key={client._id}>
                 <div className="w-24 h-24 rounded-full relative border-[3px] border-solid border-[#5453e0]">
-                  <audio autoPlay></audio>
+                  <audio
+                    ref={(instance) => provideRef(instance, client._id)}
+                    autoPlay
+                  ></audio>
                   <img
                     className="w-full h-full rounded-full"
                     src={client.avatar}
