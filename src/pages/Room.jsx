@@ -14,11 +14,21 @@ const Room = () => {
   const { id: roomId } = useParams();
   const user = useSelector(selectUser);
   const [room, setRoom] = useState(null);
-  const { clients, provideRef } = useWebRTC(roomId, user);
+  const [isMute, setIsMute] = useState(true);
+  const { clients, provideRef, handleMute } = useWebRTC(roomId, user);
 
   const handleManualLeave = () => {
     navigate("/rooms");
   };
+
+  const handleMuteClick = (clientId) => {
+    if (clientId !== user._id) return;
+    setIsMute((isMute) => !isMute);
+  };
+
+  useEffect(() => {
+    handleMute(isMute, user._id);
+  }, [isMute]);
 
   useEffect(() => {
     const fetchRoom = async () => {
@@ -75,7 +85,10 @@ const Room = () => {
                     src={client.avatar}
                     alt="avatar"
                   />
-                  <button className="flex items-center justify-center bg-[#212121] absolute bottom-0 right-0 w-8 h-8 box-content rounded-[30px] p-1 shadow-md">
+                  <button
+                    onClick={() => handleMuteClick(client._id)}
+                    className="flex items-center justify-center bg-[#212121] absolute bottom-0 right-0 w-8 h-8 box-content rounded-[30px] p-1 shadow-md"
+                  >
                     {client.muted ? <FaMicrophoneSlash /> : <FaMicrophone />}
                   </button>
                 </div>

@@ -9,6 +9,7 @@ export const useWebRTC = (roomId, user) => {
   const [clients, setClients] = useStateWithCallback([]);
   const socketRef = useRef(null);
   const localMediaStream = useRef(null);
+  const clientsRef = useRef([]);
   const audioElements = useRef({}); // key - userId
   const connections = useRef({}); // key - socketId
 
@@ -129,6 +130,41 @@ export const useWebRTC = (roomId, user) => {
     }
   };
 
+  const handleMute = (isMute, userId) => {
+    let interval = setInterval(() => {
+      if (localMediaStream.current) {
+        localMediaStream.current.getTracks()[0].enabled = !isMute;
+        if (isMute) {
+          if (socketRef.current)
+            socketRef.current.emit(ACTIONS.MUTE, { roomId, userId });
+        } else {
+          if (socketRef.current)
+            socketRef.current.emit(ACTIONS.UN_MUTE, { roomId, userId });
+        }
+        clearInterval(interval);
+      }
+    }, 200);
+  };
+
+  const socketCbMute = ({ peerId, userId }) => {
+    setMute(true, userId);
+  };
+
+  const socketCbUnMute = ({ peerId, userId }) => {
+    setMute(false, userId);
+  };
+
+  const setMute = (mute, userId) => {
+    const clientIdx = clientsRef.current
+      .map((client) => client._id)
+      .indexOf(userId);
+    const connectedClients = JSON.parse(JSON.stringify(clientsRef.current));
+    if (clientIdx > -1) {
+      connectedClients[clientIdx].muted = mute;
+      setClients(connectedClients);
+    }
+  };
+
   useEffect(() => {
     const init = async () => {
       socketRef.current = socket;
@@ -148,6 +184,8 @@ export const useWebRTC = (roomId, user) => {
         socketRef.current.on(ACTIONS.ICE_CANDIDATE, handleIceCandidate);
         socketRef.current.on(ACTIONS.SESSION_DESCRIPTION, handleRemoteSdp);
         socketRef.current.on(ACTIONS.REMOVE_PEER, handleRemovePeer);
+        socketRef.current.on(ACTIONS.MUTE, socketCbMute);
+        socketRef.current.on(ACTIONS.UN_MUTE, socketCbUnMute);
       }
     };
 
@@ -156,16 +194,21 @@ export const useWebRTC = (roomId, user) => {
     return () => {
       if (localMediaStream.current)
         localMediaStream.current.getTracks().forEach((track) => track.stop());
-
       if (socketRef.current) {
         socketRef.current.emit(ACTIONS.LEAVE);
         socketRef.current.off(ACTIONS.ADD_PEER);
         socketRef.current.off(ACTIONS.ICE_CANDIDATE);
         socketRef.current.off(ACTIONS.SESSION_DESCRIPTION);
         socketRef.current.off(ACTIONS.REMOVE_PEER);
+        socketRef.current.off(ACTIONS.MUTE);
+        socketRef.current.off(ACTIONS.UN_MUTE);
       }
     };
   }, []);
 
-  return { clients, provideRef };
+  useEffect(() => {
+    clientsRef.current = clients;
+  }, [clients]);
+
+  return { clients, provideRef, handleMute };
 };
