@@ -20,7 +20,10 @@ const StepOtp = () => {
   const dispatch = useDispatch();
 
   async function submit() {
-    if (!otp || !phoneNumber || !hashToken) return;
+    if (!otp || !phoneNumber || !hashToken) {
+      alert("Please enter a valid OTP!!");
+      return;
+    }
     try {
       dispatch(verifyOtpAsync({ phoneNumber, otp, hashToken }));
     } catch (error) {
@@ -45,6 +48,8 @@ const StepOtp = () => {
             type="number"
             value={otp}
             onChange={(e) => setOtp(e.target.value)}
+            autoFocus
+            onKeyDown={(e) => e.key === "Enter" && submit()}
           />
           <div className="mt-10">
             <Button onClick={submit} text="Next" />

@@ -11,7 +11,10 @@ const StepName = ({ onNext }) => {
   const [username, setUsername] = useState(name);
 
   function nextStep() {
-    if (!username) return;
+    if (!username) {
+      alert("Please enter a valid Name!!");
+      return;
+    }
     dispatch(setName(username));
     onNext();
   }
@@ -24,9 +27,11 @@ const StepName = ({ onNext }) => {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            autoFocus
+            onKeyDown={(e) => e.key === "Enter" && nextStep()}
           />
           <p className="w-[70%] text-center my-5 mx-auto">
-            People use real names at Echo :) !
+            People use real names at Echo : )
           </p>
           <div>
             <Button onClick={nextStep} text="Next" />

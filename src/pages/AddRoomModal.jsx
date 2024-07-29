@@ -37,6 +37,7 @@ const AddRoomModal = ({ onClose }) => {
             fullwidth="true"
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
+            autoFocus
           />
           <h2 className="text-lg my-[10px] mx-0 font-bold">Room Types</h2>
           <div className="grid grid-cols-3 gap-[30px]">

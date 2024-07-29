@@ -28,7 +28,10 @@ const StepAvatar = () => {
   }
 
   async function submit() {
-    if (!name || !avatar) return;
+    if (!name || !avatar) {
+      alert("Please upload a Photo!!");
+      return;
+    }
     setLoading(true);
     try {
       dispatch(activateAccountAsync({ name, avatar }));
@@ -44,18 +47,18 @@ const StepAvatar = () => {
   ) : (
     <>
       <div className="flex items-center justify-center mt-24">
-        <Card title={`Okay, name`}>
+        <Card title={`Okay, ${name}`}>
           <p className="text-[#c4c5c5] text-center mb-5">
             How&apos;s this photo?
           </p>
           <div className="mb-4 w-[110px] h-[110px] border-[6px] border-solid border-[#0077ff] rounded-full flex items-center justify-center overflow-hidden">
             <label
-              className="my-[30px] mx-0 inline-block cursor-pointer"
+              className="my-[30px] w-full h-full flex items-center justify-center mx-0 cursor-pointer"
               htmlFor="avatarInput"
             >
               <img
                 src={image}
-                className="h-[90%] w-[90%] object-cover"
+                className="h-full w-full object-cover flex items-center justify-center"
                 alt="avatar"
               />
               <input
