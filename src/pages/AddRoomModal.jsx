@@ -38,6 +38,7 @@ const AddRoomModal = ({ onClose }) => {
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
             autoFocus
+            onKeyDown={(e) => e.key === "Enter" && createRoom()}
           />
           <h2 className="text-lg my-[10px] mx-0 font-bold">Room Types</h2>
           <div className="grid grid-cols-3 gap-[30px]">
