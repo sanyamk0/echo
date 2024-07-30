@@ -25,7 +25,7 @@ const Navigation = () => {
           <div className="flex items-center">
             <h3 className="text-base font-semibold">{user?.name}</h3>
             <img
-              className="rounded-full object-cover border-2 border-solid border-[#0077ff] my-0 mx-5 mr-2 min-w-10 h-10"
+              className="rounded-full object-cover border-2 border-solid border-[#0077ff] my-0 mx-5 mr-2 w-10 h-10"
               src={user.avatar ? user.avatar : "/images/monkey.png"}
               alt="avatar"
             />
