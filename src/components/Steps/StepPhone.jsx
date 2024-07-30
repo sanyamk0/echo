@@ -41,7 +41,7 @@ const StepPhone = ({ onNext }) => {
           <div className="mt-10">
             <Button text="Next" onClick={submit} />
           </div>
-          <p className="text-[#c4c5c5] w-[95%] my-0 mx-auto mt-5">
+          <p className="text-[#c4c5c5] w-[95%] my-0 mx-auto mt-5 text-center">
             By entering your number, you are agreeing to our Terms of Service
             and Privacy Policy. Thanks!
           </p>

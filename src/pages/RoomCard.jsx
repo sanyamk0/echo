@@ -24,7 +24,7 @@ const RoomCard = ({ room }) => {
             <img
               src={speaker.avatar}
               alt="avatar"
-              className="rounded-full object-cover border-2 border-solid border-[#20bd5f] bg-[#1d1d1d] w-10 h-10"
+              className="rounded-full object-cover border-2 border-solid border-[#20bd5f] bg-[#1d1d1d] min-w-10 w-10 h-10"
             />
           </div>
         ))}

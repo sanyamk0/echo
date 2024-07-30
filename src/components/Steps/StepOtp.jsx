@@ -54,9 +54,9 @@ const StepOtp = () => {
           <div className="mt-10">
             <Button onClick={submit} text="Next" />
           </div>
-          <p className="text-[#c4c5c5] w-[95%] my-0 mx-auto mt-5">
-            By entering your number, you’re agreeing to our Terms of Service and
-            Privacy Policy. Thanks!
+          <p className="text-[#c4c5c5] w-[95%] my-0 mx-auto mt-5 text-center">
+            By entering your number, you are agreeing to our Terms of Service
+            and Privacy Policy. Thanks!
           </p>
         </Card>
       </div>

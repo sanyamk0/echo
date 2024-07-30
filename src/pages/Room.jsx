@@ -55,8 +55,8 @@ const Room = () => {
           </span>
         </button>
       </div>
-      <div className="bg-[#1d1d1d] mt-16 rounded-tr-[20px] rounded-tl-[20px] min-h-[calc(100vh-205px)] p-8">
-        <div className="flex items-center justify-between">
+      <div className="bg-[#1d1d1d] mt-16 rounded-tr-[20px] rounded-tl-[20px] min-h-[calc(100vh-205px)] p-8 min-w-fit">
+        <div className="flex items-center justify-between gap-2">
           <h2 className="text-lg font-bold">{room?.topic}</h2>
           <div className="flex items-center">
             <button className="bg-[#262626] outline-none ml-8 flex items-center py-[0.7rem] px-4 rounded-[20px] text-white  transition-all duration-300 ease-in-out hover:bg-[#333333]">
@@ -64,10 +64,10 @@ const Room = () => {
             </button>
             <button
               onClick={handleManualLeave}
-              className="bg-[#262626] outline-none ml-8 flex items-center py-[0.7rem] px-4 rounded-[20px] text-white  transition-all duration-300 ease-in-out hover:bg-[#333333]"
+              className="bg-[#262626] outline-none ml-6 flex items-center py-[0.7rem] px-4 rounded-[20px] text-white  transition-all duration-300 ease-in-out hover:bg-[#333333]"
             >
               <FaHandPeace />
-              <span className="font-bold ml-4">Leave Quietly</span>
+              <span className="font-bold ml-4">Leave</span>
             </button>
           </div>
         </div>
@@ -87,12 +87,12 @@ const Room = () => {
                   />
                   <button
                     onClick={() => handleMuteClick(client._id)}
-                    className="flex items-center justify-center bg-[#212121] absolute bottom-0 right-0 w-8 h-8 box-content rounded-[30px] p-1 shadow-md"
+                    className="flex items-center justify-center bg-[#212121] absolute bottom-0 right-0 w-6 h-6 box-content rounded-[30px] p-1 shadow-md"
                   >
                     {client.muted ? <FaMicrophoneSlash /> : <FaMicrophone />}
                   </button>
                 </div>
-                <h4 className="font-bold mt-4">{client.name}</h4>
+                <h4 className="font-semibold mt-4">{client.name}</h4>
               </div>
             );
           })}
