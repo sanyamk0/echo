@@ -10,6 +10,7 @@ import {
   selectPhone,
   verifyOtpAsync,
 } from "../../app/auth/authSlice";
+import { toast } from "sonner";
 
 const StepOtp = () => {
   const [otp, setOtp] = useState("");
@@ -32,12 +33,8 @@ const StepOtp = () => {
   }
 
   useEffect(() => {
-    if (error) {
-      console.log(error.message);
-    }
-    if (generatedOtp) {
-      console.log("Your OTP is: ", generatedOtp);
-    }
+    if (error) toast.error(`Error: ${error.message}`);
+    if (generatedOtp) toast.success(`OTP: ${generatedOtp}`);
   }, [generatedOtp, error]);
 
   return (
