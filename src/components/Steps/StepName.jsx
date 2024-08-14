@@ -4,6 +4,7 @@ import Button from "../shared/Button";
 import TextInput from "../shared/TextInput";
 import { useDispatch, useSelector } from "react-redux";
 import { selectName, setName } from "../../app/activate/activateSlice";
+import { toast } from "sonner";
 
 const StepName = ({ onNext }) => {
   const name = useSelector(selectName);
@@ -12,7 +13,7 @@ const StepName = ({ onNext }) => {
 
   function nextStep() {
     if (!username) {
-      alert("Please enter a valid Name!!");
+      toast.warning("Please enter a valid Name!!");
       return;
     }
     dispatch(setName(username));

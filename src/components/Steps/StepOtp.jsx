@@ -22,7 +22,7 @@ const StepOtp = () => {
 
   async function submit() {
     if (!otp || !phoneNumber || !hashToken) {
-      alert("Please enter a valid OTP!!");
+      toast.warning("Please enter a valid OTP!!");
       return;
     }
     try {

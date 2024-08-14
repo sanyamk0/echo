@@ -4,6 +4,7 @@ import Button from "../shared/Button";
 import TextInput from "../shared/TextInput";
 import { useDispatch } from "react-redux";
 import { sendOtpAsync } from "../../app/auth/authSlice";
+import { toast } from "sonner";
 
 const StepPhone = ({ onNext }) => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -15,14 +16,15 @@ const StepPhone = ({ onNext }) => {
       phoneNumber.trim().length < 10 ||
       phoneNumber.trim().length > 10
     ) {
-      alert("Please enter a valid Phone Number!!");
+      toast.warning("Please enter a valid Phone Number!!");
       return;
     }
     try {
-      dispatch(sendOtpAsync(phoneNumber));
+      await dispatch(sendOtpAsync(phoneNumber)).unwrap();
       onNext();
     } catch (err) {
       console.log(err);
+      toast.error("Something went wrong!!");
     }
   }
 

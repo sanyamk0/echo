@@ -9,6 +9,7 @@ import {
   selectName,
   setAvatar,
 } from "../../app/activate/activateSlice";
+import { toast } from "sonner";
 
 const StepAvatar = () => {
   const [image, setImage] = useState("");
@@ -29,7 +30,7 @@ const StepAvatar = () => {
 
   async function submit() {
     if (!name || !avatar) {
-      alert("Please upload a Photo!!");
+      toast.warning("Please upload a Photo!!");
       return;
     }
     setLoading(true);
