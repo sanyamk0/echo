@@ -9,6 +9,8 @@ import { getAllRoomsAsync } from "../app/rooms/roomsSlice";
 const Rooms = () => {
   const [showModal, setShowModal] = useState(false);
   const [rooms, setRooms] = useState([]);
+  const [filteredRooms, setFilteredRooms] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -16,12 +18,20 @@ const Rooms = () => {
       try {
         const { data } = await dispatch(getAllRoomsAsync()).unwrap();
         setRooms(data);
+        setFilteredRooms(data);
       } catch (error) {
         console.log(error);
       }
     };
     fetchRooms();
   }, [dispatch]);
+
+  useEffect(() => {
+    const filtered = rooms.filter((room) =>
+      room.topic.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredRooms(filtered);
+  }, [searchQuery, rooms]);
 
   return (
     <>
@@ -36,6 +46,8 @@ const Rooms = () => {
               <input
                 type="text"
                 className="bg-transparent border-none outline-none p-2 text-[#fff] w-full"
+                onChange={(e) => setSearchQuery(e.target.value)}
+                autoFocus
               />
             </div>
           </div>
@@ -50,7 +62,7 @@ const Rooms = () => {
           </div>
         </div>
         <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 gap-5 mt-14">
-          {rooms.map((room) => (
+          {filteredRooms.map((room) => (
             <RoomCard key={room._id} room={room} />
           ))}
         </div>

@@ -19,12 +19,14 @@ export const useWebRTC = (roomId, user) => {
 
   const addNewClient = useCallback(
     (newClient, cb) => {
-      const lookingFor = clients.find((client) => client._id === newClient._id);
+      const lookingFor = clientsRef.current.find(
+        (client) => client._id === newClient._id
+      );
       if (lookingFor === undefined) {
         setClients((existingClients) => [...existingClients, newClient], cb);
       }
     },
-    [clients, setClients]
+    [setClients]
   );
 
   const captureMedia = async () => {
